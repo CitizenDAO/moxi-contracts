@@ -1,0 +1,12 @@
+from node:alpine
+
+RUN apk add -t .gyp --no-cache git python3 g++ make
+ENV NPM_CONFIG_PREFIX=/home/node/.npm-global
+
+USER node
+
+RUN npm install -g truffle@5.3.7
+
+USER root
+RUN apk del .gyp
+ENV PATH="/home/node/.npm-global/bin:${PATH}"

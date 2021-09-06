@@ -1,0 +1,22 @@
+version: '3'
+services:
+  truffle-box:
+    build:
+      context: ../..
+      dockerfile: ./build/docker/Dockerfile.truffle
+    working_dir: /src/
+    volumes:
+      - ../../src/contracts:/src/contracts
+      - ../../deployments/truffle:/src/
+      - ./scripts:/scripts
+      - node-modules:/src/node_modules
+      - dev-build:/build
+      - truffle-cache:/root/.config/truffle
+    tty: true
+    stdin_open: true
+    env_file: dev.env
+    command: /scripts/truffle-compile-and-migrate.sh
+volumes:
+  dev-build:
+  truffle-cache:
+  node-modules:

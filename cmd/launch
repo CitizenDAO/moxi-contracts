@@ -1,0 +1,67 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import subprocess
+import sys
+
+
+def make_parser():
+    parser = argparse.ArgumentParser(
+        description=
+        """
+        MOXI dev environment
+        """,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+    subparser = parser.add_subparsers(help="command",  dest="command")
+
+    dev_parser = subparser.add_parser("dev",
+                                      help="migrate locally")
+    dev_parser.add_argument("-c", "--console", action="store_true",
+                            help="launch truffle development console")
+    dev_parser.add_argument("-s", "--shell", action="store_true",
+                            help="attach to truffle box shell")
+    dev_parser.add_argument("-b", "--build", action="store_true",
+                            help="rebuild docker containers")
+
+    subparser.add_parser("down",
+                         help="tear down dev images")
+
+    return(parser)
+
+
+if __name__ == '__main__':
+
+    abspath = os.path.abspath(__file__)
+    dname = os.path.dirname(abspath)
+    os.chdir(dname)
+
+    try:
+        p = make_parser()
+        args = p.parse_args()
+
+        compose = ["docker-compose",
+                   "-p", "moxi", "--env-file", "../deployments/dev/dev.env",
+                   "-f", "../deployments/dev/docker-compose.ganache.yml",
+                   "-f", "../deployments/dev/docker-compose.truffle.yml"]
+
+        if args.command == "dev":
+            run = compose + ["up", "-d"]
+            if args.build:
+                run += ["--build"]
+            subprocess.call(run)
+            if args.console:
+                print("launching truffle console")
+                subprocess.call(["docker", "exec", "-it", "moxi_truffle-box_1",
+                                 "/scripts/truffle-launch-console.sh"])
+            elif args.shell:
+                subprocess.call(["docker", "exec", "-it", "moxi_truffle-box_1", "/bin/sh"])
+                print("done")
+        elif args.command == "down":
+            down = compose + ["down"]
+            subprocess.call(down)
+        else:
+            raise Exception()
+    except Exception:
+        p.print_help()
