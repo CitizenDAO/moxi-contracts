@@ -1,19 +1,19 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 
 const fs = require('fs');
-const infuraKey =  fs.readFileSync(".key").toString().trim();
-const mnemonic = fs.readFileSync(".secret").toString().trim();
-const etherscanKey = fs.readFileSync(".api").toString().trim();
+// const infuraKey =  fs.readFileSync(".key").toString().trim();
+// const mnemonic = fs.readFileSync(".secret").toString().trim();
+// const etherscanKey = fs.readFileSync(".api").toString().trim();
 
 module.exports = {
 
-    api_keys: {
-        etherscan: etherscanKey
-    },
+    // api_keys: {
+    //     etherscan: etherscanKey
+    // },
 
-    plugins: [
-        'truffle-plugin-verify'
-    ],
+    // plugins: [
+    //     'truffle-plugin-verify'
+    // ],
 
     contracts_build_directory: process.env.CONTRACTS_DIR || "./build/contracts",
     
