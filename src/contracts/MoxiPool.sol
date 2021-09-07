@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/AccessControlEnumerable.sol";
-import "@openzeppelin/contracts/utils/EnumerableSet.sol";
+import "@openzeppelin/contracts/utils/structs/EnumerableSet.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Context.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -27,13 +27,13 @@ contract MoxiPool is AccessControlEnumerable {
 
     struct Claim {
         address claimee;
-        ClaimType type;
+        ClaimType claimType;
         bool verified;
         bool rejected;
         bool claimed;
     }
 
-    mapping (uint256 => Claim) public claims;s
+    mapping (uint256 => Claim) public claims;
     Counters.Counter private claimCounter;
 
     // currency
@@ -88,18 +88,18 @@ contract MoxiPool is AccessControlEnumerable {
         if (!EnumerableSet.contains(destinations, from)) {
             EnumerableSet.add(destinations, from);
         }
-        destinationWeightings[address] = weight;
+        destinationWeightings[from] = weight;
         return true;
     }
 
-    function setMaxPayout (ClaimType type, uint256 maxPayout)
+    function setMaxPayout (ClaimType claimType, uint256 maxPayout)
         public onlyGovernors returns (bool) {
-        maxPayouts[type] = maxPayout;
+        maxPayouts[claimType] = maxPayout;
         return true;
     }
 
-    function getMaxPayout (ClaimType type) public view returns (uint256) {
-        return maxPayouts[type];
+    function getMaxPayout (ClaimType claimType) public view returns (uint256) {
+        return maxPayouts[claimType];
     }
     
     // payments in
@@ -126,7 +126,7 @@ contract MoxiPool is AccessControlEnumerable {
         } else {
             // (re)start membership
             latestPayment[msg.sender] = period;
-            membershipStart = period;
+            membershipStart[msg.sender] = period;
         }
         
         require (inputToken.allowance(msg.sender, address(this)) <= amount,
@@ -144,12 +144,12 @@ contract MoxiPool is AccessControlEnumerable {
 
     // claims
 
-    function makeClaim(ClaimType type) public onlyMembers returns (bool) {
+    function makeClaim(ClaimType claimType) public onlyMembers returns (bool) {
         // construct claim
         uint256 id = claimCounter.current();
 
         claims[id].claimee = msg.sender;
-        claims[id].type = type;
+        claims[id].claimType = claimType;
 
         return true;
     }
@@ -172,7 +172,7 @@ contract MoxiPool is AccessControlEnumerable {
 
     function collectClaim(uint256 claimId) public onlyMembers returns (bool) {
         require (claimId < claimCounter.current());
-        Claim claim = claims[claimId];
+        Claim memory claim = claims[claimId];
         require (claim.verified && !claim.rejected && !claim.claimed);
 
         // minimum token amount??
