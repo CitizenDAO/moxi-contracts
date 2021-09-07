@@ -22,36 +22,32 @@ Moxi consists of three core components:
 - Our designs are on [Figma](https://www.figma.com/file/XC2i0AE6c3SN96w5eHLihW/Moxi-Dashboard-Designs)
 - Moxi is the first $Health project from [Citizen DAO](https://citizendao.com)  
 
+## Development
 
-Development - How To Contribute
----
+### Running Dev Environment
 
-*Edit this*
+Use the command
+```bash
+> ./cmd/launch dev -c
+```
+to run the compile and migrate contracts to a test network. In lieu of a sensible *nix environment, run the command through python
+```bash
+> python3 /cmd/launch
+```
+the following flags are available:
 
-Please always branch off of `develop`, all branches should be named based on
-a corresponding issue number, for example `issue-126`. All open issues can be
-viewed [here](https://github.com/CitizenHealth/COVIDx/issues). If you're working
-on a bug fix or new functionality not already listed in an issue, you must first
-create a new issue to document what you will be working on.
+- -c - launch the truffle development console
+- -s - launch a shell environment
+- -b - rebuild the docker images
+- -h - help output
 
-Please be sure to use `yarn` as your package manager *instead* of `npm`.
+### Contributing
 
-1. Clone our github repo, once you've been added to the project
-2. Run: `yarn install`
-3. Checkout to your issue branch
-4. Create a local .env file; you can use the .env.sample file as a guide.
-5. Reach out to a maintainer for the Firebase and Tripetto API keys.
-6. Run `yarn start`, after an initial load it should auto-open http://localhost:3000/
-7. Develop and test your code changes, it should livereload out of the box
-8. Make sure you commit changes often, with clear commit messages
-9. Send a pull request
+We encourage a [triangle workflow](https://gist.github.com/anjohnson/8994c95ab2a06f7d2339) for development, with pull requests going directly onto the main branch; essentially a [github flow](https://guides.github.com/introduction/flow/) model.
 
-## Build & Deployment from scratch
-Pre-requisite: Be added to the Firebase project if not already
+### Requirements
 
-1. Clone github repo
-2. Run: yarn install
-3. Run: yarn deploy
+
 
 ## Maintainers
 
@@ -65,10 +61,10 @@ Pre-requisite: Be added to the Firebase project if not already
 
 
 ### Dependencies
-Moxi uses a number of open source projects to work properly:
+We will make the dev environment Docker-based for consistency / ease-of-use, so requirements for use should be limited to:
 
-* [React](https://reactjs.org/) - for our frontend
-* Add more
+* Docker (make sure it's a latest or very recent release)
+* Python 3 (for scripting)
 
 And of course Moxi itself is open source under a MIT license.
 
