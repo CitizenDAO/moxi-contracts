@@ -1,10 +1,23 @@
+
 # Moxi Contracts Development Framework
 
-Health insurance is expensive to buy, confusing to use, and doesn't align with the crypto world.
+**Problem:** Health insurance is expensive to buy & confusing to use. 
 
-Our solution is Moxi - a shared health insurance protocol governed by a DAO.
+**Solution:** Use programmable money and chatbots to automate the health insurance industry away.
 
-Moxi consists of three core components:
+**Project:** Moxi is a decentralized health insurance protocol governed by Citizen DAO. 
+
+
+## Moxi helps you:
+
+**Save** for future healthcare expenses with a crypto-native savings account earning 10-20% APY. 
+
+**Share** expensive medical bills with the Citizen Health Fund. All members contribute, all members get help.
+
+**Finance** medical services, procedures, and products outside the sharing fund.
+
+
+## How it works
 
 - Instead of paying for an insurance policy, you deposit DAI or USDC in a collective pool earning APY. 
 - Collective stable currency is then lent out on Yearn, Aave, Sushi, & other yielding sources to generate the APY.
@@ -69,7 +82,3 @@ We will make the dev environment Docker-based for consistency / ease-of-use, so 
 And of course Moxi itself is open source under a MIT license.
 
 ## Moxi API
-
-
-
-
